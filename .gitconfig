@@ -1,0 +1,132 @@
+# alias {{{
+[alias]
+  # basic {{{
+  st = status -s # Show short status
+  cl = clone # Clone repository
+  ci = commit # Commit changes
+  co = checkout # Checkout branch or files
+  br = branch # List or create branches
+  r = reset # Reset current HEAD to specified state
+  cp = cherry-pick # Apply commit from another branch
+  gr = grep -Ii # Grep with case insensitivity
+  # }}}
+
+  # tweak defaults {{{
+  diff = diff --word-diff # Show word diff
+  branch = branch -ra # List all branches, including remotes
+  grep = grep -Ii # Grep with case insensitivity
+  bra = branch -ra # List all branches, including remotes
+  ai = add --interactive # Interactive add
+  f = "!git ls-files | grep -i" # Grep for filenames
+  # }}}
+
+  # commit {{{
+  cm = commit -m # Commit with message
+  cma = commit -a -m # Commit all changes with message
+  ca = commit --amend # Amend last commit
+  amend = commit --amend # Amend last commit
+  noedit = commit --amend --no-edit # Amend without editing message
+  caa = commit -a --amend -C HEAD # Amend all changes, reuse message
+  # }}}
+
+  # log commands {{{
+  ls = log --pretty=format:"%C(green)%h %C(yellow)[%ad] %Cred%d %Creset%s%Cblue [%cn]" --decorate --date=relative # Compact log with relative dates
+  ll = log --pretty=format:"%C(yellow)%h %Cred%d %Creset%s%Cblue [%cn]" --decorate --numstat # Detailed log with numstat
+  lc = "!f() { git ll \"$1\"^..\"$1\"; }; f" # Log changes between commits
+  lnc = log --pretty=format:"%h %s [%cn]" # Compact log
+  fl = log -u # Log with file changes
+  filelog = log -u # Log with file changes
+  hist = log --graph --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(white)- %an, %ar%Creset' # Log with graph
+  recent = log -1 HEAD # Show most recent commit
+  # }}}
+
+  # diff {{{
+  d = diff --word-diff # Show word diff
+  dc = diff --cached # Show diff of staged changes
+  dlc = diff --cached HEAD^ # Show diff of last commit
+  dr = "!f() { git diff -w \"$1\"^..\"$1\"; }; f" # Show diff ignoring whitespace
+  diffr = "!f() { git diff \"$1\"^..\"$1\"; }; f" # Show diff between revisions
+  # }}}
+
+  # reset commands {{{
+  r1 = reset HEAD^ # Reset to previous commit
+  r2 = reset HEAD^^ # Reset to two commits ago
+  rh = reset --hard # Hard reset
+  rh1 = reset HEAD^ --hard # Hard reset to previous commit
+  rh2 = reset HEAD^^ --hard # Hard reset to two commits ago
+  # }}}
+
+  # stash {{{
+  sl = stash list # List stashes
+  sa = stash apply # Apply stash
+  ss = stash save # Save stash
+  # }}}
+
+  # assume aliases {{{
+  assume = update-index --assume-unchanged # Assume unchanged
+  unassume = update-index --no-assume-unchanged # Unassume unchanged
+  assumed = "!git ls-files -v | grep ^h | cut -c 3-" # List assumed files
+  unassumeall = "!git assumed | xargs git update-index --no-assume-unchanged" # Unassume all files
+  assumeall = "!git status -s | awk {'print $2'} | xargs git assume" # Assume all files
+  # }}}
+
+  # subtree {{{
+  sba = "!f() { git subtree add --prefix $2 $1 master --squash; }; f" # Add subtree
+  sbu = "!f() { git subtree pull --prefix $2 $1 master --squash; }; f" # Pull subtree
+  # }}}
+
+  # various useful {{{
+  undo = "!f() { git reset --hard $(git rev-parse --abbrev-ref HEAD)@{${1-1}}; }; f" # Undo last change
+  alias = "!f() { git config --get-regexp \"^alias.*\"; }; f" # List aliases
+  author = commit --amend --author # Amend author of last commit
+  cleanup = "!git branch --merged | grep -v '\\*\\|master\\|develop\\|QA\\|UAT' | xargs -n 1 git branch -d" # Delete merged branches
+  diff-count = "!f() { git rev-list --left-right --count $*; }; f" # Count differences between branches
+  miedo = "!f() { git add $1 && git commit --amend --no-edit && git push --force-with-lease; }; f" # Amend and push with lease
+  notin = "!f() { git log --oneline --abbrev-commit --no-merges ...$1; }; f" # Show commits not in another branch
+  localdel = "!sh -c 'git branch | grep -v ^* | xargs git branch -D' -" # Delete local branches except current
+  localdel2 = "!f() { git branch | grep -v ^* | awk '!/develop/ && !/master/' | xargs git branch -D; }; f" # Delete local branches except main ones
+  mergeinto = "!sh -c '_CURRENT_BRANCH=$(git symbolic-ref --short HEAD) && git checkout $1 && git merge --no-ff $_CURRENT_BRANCH && git checkout $_CURRENT_BRANCH' -" # Merge current branch into another
+  mergenoff = merge --no-ff # No fast-forward merge
+  pushf = push --force-with-lease # Force push with lease
+  rb = "!f() { git fetch origin && git rebase origin/$1; }; f" # Rebase onto another branch
+  redev = "!sh -c 'git fetch origin && git rebase origin/develop' -" # Rebase onto develop
+  remas = "!sh -c 'git fetch origin && git rebase origin/master' -" # Rebase onto master
+  remdel = "!f() { git push origin --delete $1; }; f" # Delete remote branch
+  rename = "!f() { _CURRENT_BRANCH=$(git symbolic-ref --short HEAD) && git branch -m $1; git push origin :$_CURRENT_BRANCH $1 && git push origin -u $1; }; f" # Rename branch locally and remotely
+  up = pull --rebase --autostash # Pull with rebase and autostash
+  squash = "!sh -c 'git fetch origin && git rebase -i origin/$1' -" # Interactive rebase onto another branch
+
+  # last tag created
+  lasttag = describe --tags --abbrev=0 # Show last tag
+  lt = describe --tags --abbrev=0 # Show last tag
+
+  # conflict/merges
+  ours = "!f() { git co --ours $@ && git add $@; }; f" # Resolve conflict using our changes
+  theirs = "!f() { git co --theirs $@ && git add $@; }; f" # Resolve conflict using their changes
+
+  # list remotes
+  rem = "!git config -l | grep remote.*url | tail -n +2" # List remotes
+
+  # apply patch from other local repo
+  lap = "!f() { git --git-dir=$1 format-patch -k -1 --stdout $2 | git am -3 -k; }; f" # Apply patch from another repo
+
+  # open markdown files edited in last commit
+  last = "!open -a \"Visual Studio Code\" $(git show HEAD --format=\"\" --name-only | grep -e .*md$ | xargs)" # Open markdown files from last commit
+  # open just created markdown in working directory
+  newmd = "!open -a \"Visual Studio Code\" $(git status -s | awk {'print $2'})" # Open new markdown files
+
+  # initial empty commit
+  empty = "!git commit -am\"[empty] Initial commit\" --allow-empty" # Create initial empty commit
+
+  # list all aliases
+  la = "!git config -l | grep alias | cut -c 7-" # List all aliases
+  # }}}
+
+  # additional aliases {{{
+  irb = rebase -i HEAD~3 # Interactive rebase last 3 commits
+  current = "!git rev-parse --abbrev-ref HEAD" # Show current branch name
+  clean = "!git branch | grep -v 'main\\|master\\|develop\\|\\*' | xargs git branch -D" # Clean up local branches except main ones
+  brlog = "!f() { git log --oneline --abbrev-commit $1..; }; f" # Show recent commits in a branch
+  amend-last = commit --amend --no-edit # Amend last commit without changing its message
+  # }}}
+# }}}
