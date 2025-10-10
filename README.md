@@ -70,7 +70,7 @@ The script automatically detects if aliases are already installed and adapts acc
 cp ~/.gitconfig ~/.gitconfig.backup
 
 # Append aliases to your global git config
-cat gitconfig-aliases >> ~/.gitconfig
+cat aliases >> ~/.gitconfig
 ```
 
 #### Option 2: Include This Config File
@@ -79,7 +79,7 @@ Add this line to your `~/.gitconfig`:
 
 ```ini
 [include]
-  path = /path/to/this/repo/gitconfig-aliases
+  path = /path/to/this/repo/aliases
 ```
 
 #### Option 3: Use as Your Primary Config
@@ -89,7 +89,7 @@ Add this line to your `~/.gitconfig`:
 cp ~/.gitconfig ~/.gitconfig.backup
 
 # Copy this config as your main config
-cp gitconfig-aliases ~/.gitconfig
+cp aliases ~/.gitconfig
 ```
 
 ### Verification

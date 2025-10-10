@@ -6,7 +6,7 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ALIASES_FILE="$SCRIPT_DIR/gitconfig-aliases"
+ALIASES_FILE="$SCRIPT_DIR/aliases"
 GITCONFIG="$HOME/.gitconfig"
 
 # Colors for output
