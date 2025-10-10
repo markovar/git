@@ -38,11 +38,11 @@
   # ============================================================================
   # LOG & HISTORY
   # ============================================================================
-  ls = log --pretty=format:"%C(green)%h %C(yellow)[%ad] %Cred%d %Creset%s%Cblue [%cn]" --decorate --date=relative  # Compact log with relative dates
-  ll = log --pretty=format:"%C(yellow)%h %Cred%d %Creset%s%Cblue [%cn]" --decorate --numstat  # Detailed log with numstat
+  ls = "log --pretty=format:'%C(green)%h %C(yellow)[%ad] %Cred%d %Creset%s%Cblue [%cn]' --decorate --date=relative"  # Compact log with relative dates
+  ll = "log --pretty=format:'%C(yellow)%h %Cred%d %Creset%s%Cblue [%cn]' --decorate --numstat"  # Detailed log with numstat
   lc = "!f() { git ll \"$1\"^..\"$1\"; }; f"       # Log changes between commits
-  lnc = log --pretty=format:"%h %s [%cn]"          # Compact log
-  hist = log --graph --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(white)- %an, %ar%Creset'  # Log with graph
+  lnc = "log --pretty=format:'%h %s [%cn]'"        # Compact log
+  hist = "log --graph --pretty=format:'%C(yellow)%h%C(cyan)%d%Creset %s %C(white)- %an, %ar%Creset'"  # Log with graph
   recent = log -1 HEAD                              # Show most recent commit
   fl = log -u                                       # Log with file changes
   filelog = log -u                                  # Log with file changes
